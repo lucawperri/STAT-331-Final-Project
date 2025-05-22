@@ -1,0 +1,55 @@
+---
+title: "final-project"
+format: html
+editor: visual
+---
+
+```{r setup}
+#| output: false
+
+library(tidyverse)
+library(knitr)
+```
+
+## Data Import
+
+```{r}
+#| output: false
+
+co2 <- read_csv("co2_pcap_cons.csv")
+sdi <- read_csv("sdi.csv")
+```
+
+## Cleaning
+
+```{r}
+# Convert all columns except 'country' to character to avoid type conflicts
+co2_clean <- co2 %>%
+  mutate(across(-country, as.character))
+
+# Pivot CO2 to long
+co2_long <- co2_clean %>%
+  pivot_longer(-country, names_to = "year", values_to = "co2_per_capita") %>%
+  mutate(
+    year = as.integer(year),
+    co2_per_capita = parse_number(co2_per_capita)
+  )
+
+# Pivot SDI to long
+sdi_long <- sdi %>%
+  pivot_longer(-country, names_to = "year", values_to = "sdi_score") %>%
+  mutate(
+    year = as.integer(year),
+    sdi_score = as.numeric(sdi_score)
+  )
+```
+
+```{r}
+# Join and clean
+merged_data <- inner_join(co2_long, sdi_long, by = c("country", "year")) %>%
+  drop_na(co2_per_capita, sdi_score)
+
+merged_data %>%
+  slice_head(n = 10) %>%
+  kable()
+```
