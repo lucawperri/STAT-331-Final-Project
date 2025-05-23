@@ -111,20 +111,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="cleaning">Cleaning</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert all columns except 'country' to character to avoid type conflicts</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>co2_clean <span class="ot">&lt;-</span> co2 <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>co2_clean <span class="ot">&lt;-</span> co2 <span class="sc">|&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="sc">-</span>country, as.character))</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pivot CO2 to long</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>co2_long <span class="ot">&lt;-</span> co2_clean <span class="sc">%&gt;%</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>country, <span class="at">names_to =</span> <span class="st">"year"</span>, <span class="at">values_to =</span> <span class="st">"co2_per_capita"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>co2_long <span class="ot">&lt;-</span> co2_clean <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>country, <span class="at">names_to =</span> <span class="st">"year"</span>, <span class="at">values_to =</span> <span class="st">"co2_per_capita"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="fu">as.integer</span>(year),</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">co2_per_capita =</span> <span class="fu">parse_number</span>(co2_per_capita)</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Pivot SDI to long</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>sdi_long <span class="ot">&lt;-</span> sdi <span class="sc">%&gt;%</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>country, <span class="at">names_to =</span> <span class="st">"year"</span>, <span class="at">values_to =</span> <span class="st">"sdi_score"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>sdi_long <span class="ot">&lt;-</span> sdi <span class="sc">|&gt;</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>country, <span class="at">names_to =</span> <span class="st">"year"</span>, <span class="at">values_to =</span> <span class="st">"sdi_score"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="fu">as.integer</span>(year),</span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">sdi_score =</span> <span class="fu">as.numeric</span>(sdi_score)</span>
@@ -132,11 +132,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join and clean</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(co2_long, sdi_long, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"country"</span>, <span class="st">"year"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(co2_long, sdi_long, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"country"</span>, <span class="st">"year"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(co2_per_capita, sdi_score)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>merged_data <span class="sc">%&gt;%</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>merged_data <span class="sc">|&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -213,6 +213,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
+</section>
+<section id="written-report" class="level2">
+<h2 class="anchored" data-anchor-id="written-report">Written Report</h2>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>For our project, we used Gapminder to find our two quantitative variables of our choosing. Those two variables were “CO2 emissions per Capita Consumption based” and the “Sustainable Development Index”. The 1st dataset contains information that tracks how much CO2 “consumption-based emissions generated in the production of goods and services according to where they were consumed, rather than where they were produced” (Our World in Data). The 2nd dataset contains information on the calculation of the development index, which is an efficiency metric made up of 2 other figures known as the “development index” and the “ecological impact index”. This index is to help measure different nations’ efficiency in delivering human development. Meaning how well can a nation maintain its population’s needs while allowing future generations to meet their needs as well. We hypothesize that there is a negative relationship between CO₂ emissions per capita (consumption-based) and the Sustainable Development Index (SDI). Specifically, as CO₂ emissions increase, we expect the SDI to decrease. The strength of this relationship is expected to be moderate to strong, depending on the country’s economic and environmental policies. The rationale behind this hypothesis is that the Sustainable Development Index penalizes nations for exceeding planetary boundaries, particularly in terms of carbon emissions. Countries that consume more and thus emit more CO₂ per capita are likely to perform worse in sustainability metrics, even if their development index is high. An outside source that supports this hypothesis is the United Nations Development Programme’s 2020 Human Development Report, titled “The Next Frontier: Human Development and the Anthropocene.” This report highlights that human development must now be measured by social progress and the ecological constraints within which development occurs. It stresses that exceeding planetary boundaries—such as carbon budgets—undermines long-term sustainability, a core principle reflected in the SDI.</p>
+</section>
+<section id="cleaning-1" class="level3">
+<h3 class="anchored" data-anchor-id="cleaning-1">Cleaning:</h3>
+<p>To prepare the data for analysis, we first converted all columns except for the <code>country</code> column to character type in the CO₂ dataset. This was done to prevent type mismatches during the pivot operation, as some cells may contain non-numeric characters (e.g., commas or units). We then reshaped both datasets from wide to long format, creating a consistent structure with <code>country</code>, <code>year</code>, and one quantitative variable per dataset. After reshaping, we parsed the CO₂ data to ensure it was numeric and cast <code>year</code> columns to integers. Finally, we merged the datasets by country and year, and removed rows containing <code>NA</code> values in either of the two key variables. This may have resulted in the loss of some countries or years from the analysis, potentially biasing our sample toward better-documented regions, but it was necessary to ensure data integrity and allow for a valid comparison between the two metrics.<br>
+</p>
+</section>
+<section id="references" class="level3">
+<h3 class="anchored" data-anchor-id="references"><strong>References</strong></h3>
+<ul>
+<li><p>Gapminder. <em>Gapminder Data</em>. <a href="https://www.gapminder.org/data/" class="uri">https://www.gapminder.org/data/</a></p></li>
+<li><p>Our World in Data. <em>CO₂ Emissions per Capita, Consumption-Based</em>. <a href="https://ourworldindata.org/grapher/consumption-co2-per-capita" class="uri">https://ourworldindata.org/grapher/consumption-co2-per-capita</a></p></li>
+<li><p>United Nations Development Programme. <em>Human Development Report 2020: The Next Frontier</em>. <a href="https://hdr.undp.org/content/human-development-report-2020" class="uri">https://hdr.undp.org/content/human-development-report-2020</a></p></li>
+</ul>
+</section>
 </section>
 
 </main>

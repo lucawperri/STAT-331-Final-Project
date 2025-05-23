@@ -24,20 +24,20 @@ sdi <- read_csv("sdi.csv")
 
 ```{r}
 # Convert all columns except 'country' to character to avoid type conflicts
-co2_clean <- co2 %>%
+co2_clean <- co2 |>
   mutate(across(-country, as.character))
 
 # Pivot CO2 to long
-co2_long <- co2_clean %>%
-  pivot_longer(-country, names_to = "year", values_to = "co2_per_capita") %>%
+co2_long <- co2_clean |>
+  pivot_longer(-country, names_to = "year", values_to = "co2_per_capita") |>
   mutate(
     year = as.integer(year),
     co2_per_capita = parse_number(co2_per_capita)
   )
 
 # Pivot SDI to long
-sdi_long <- sdi %>%
-  pivot_longer(-country, names_to = "year", values_to = "sdi_score") %>%
+sdi_long <- sdi |>
+  pivot_longer(-country, names_to = "year", values_to = "sdi_score") |>
   mutate(
     year = as.integer(year),
     sdi_score = as.numeric(sdi_score)
@@ -46,10 +46,28 @@ sdi_long <- sdi %>%
 
 ```{r}
 # Join and clean
-merged_data <- inner_join(co2_long, sdi_long, by = c("country", "year")) %>%
+merged_data <- inner_join(co2_long, sdi_long, by = c("country", "year")) |>
   drop_na(co2_per_capita, sdi_score)
 
-merged_data %>%
-  slice_head(n = 10) %>%
+merged_data |>
+  slice_head(n = 10) |>
   kable()
 ```
+
+## Written Report
+
+### Introduction 
+
+For our project, we used Gapminder to find our two quantitative variables of our choosing. Those two variables were “CO2 emissions per Capita Consumption based” and the “Sustainable Development Index”. The 1st dataset contains information that tracks how much CO2 “consumption-based emissions generated in the production of goods and services according to where they were consumed, rather than where they were produced” (Our World in Data). The 2nd dataset contains information on the calculation of the development index, which is an efficiency metric made up of 2 other figures known as the “development index” and the “ecological impact index”. This index is to help measure different nations' efficiency in delivering human development. Meaning how well can a nation maintain its population's needs while allowing future generations to meet their needs as well. We hypothesize that there is a negative relationship between CO₂ emissions per capita (consumption-based) and the Sustainable Development Index (SDI). Specifically, as CO₂ emissions increase, we expect the SDI to decrease. The strength of this relationship is expected to be moderate to strong, depending on the country's economic and environmental policies. The rationale behind this hypothesis is that the Sustainable Development Index penalizes nations for exceeding planetary boundaries, particularly in terms of carbon emissions. Countries that consume more and thus emit more CO₂ per capita are likely to perform worse in sustainability metrics, even if their development index is high. An outside source that supports this hypothesis is the United Nations Development Programme's 2020 Human Development Report, titled "The Next Frontier: Human Development and the Anthropocene." This report highlights that human development must now be measured by social progress and the ecological constraints within which development occurs. It stresses that exceeding planetary boundaries—such as carbon budgets—undermines long-term sustainability, a core principle reflected in the SDI.
+
+### Cleaning:
+
+To prepare the data for analysis, we first converted all columns except for the `country` column to character type in the CO₂ dataset. This was done to prevent type mismatches during the pivot operation, as some cells may contain non-numeric characters (e.g., commas or units). We then reshaped both datasets from wide to long format, creating a consistent structure with `country`, `year`, and one quantitative variable per dataset. After reshaping, we parsed the CO₂ data to ensure it was numeric and cast `year` columns to integers. Finally, we merged the datasets by country and year, and removed rows containing `NA` values in either of the two key variables. This may have resulted in the loss of some countries or years from the analysis, potentially biasing our sample toward better-documented regions, but it was necessary to ensure data integrity and allow for a valid comparison between the two metrics.\
+
+### **References**
+
+-   Gapminder. *Gapminder Data*. <https://www.gapminder.org/data/>
+
+-    Our World in Data. *CO₂ Emissions per Capita, Consumption-Based*. <https://ourworldindata.org/grapher/consumption-co2-per-capita>
+
+-   United Nations Development Programme. *Human Development Report 2020: The Next Frontier*. <https://hdr.undp.org/content/human-development-report-2020>
