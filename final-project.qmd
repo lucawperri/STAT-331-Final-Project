@@ -1,6 +1,9 @@
 ---
 title: "final-project"
-format: html
+format:
+  html:
+    embed-resources: true
+    code-fold: true
 editor: visual
 ---
 
@@ -56,7 +59,7 @@ merged_data |>
 
 ## Written Report
 
-### Introduction 
+### Introduction
 
 For our project, we used Gapminder to find our two quantitative variables of our choosing. Those two variables were “CO2 emissions per Capita Consumption based” and the “Sustainable Development Index”. The 1st dataset contains information that tracks how much CO2 “consumption-based emissions generated in the production of goods and services according to where they were consumed, rather than where they were produced” (Our World in Data). The 2nd dataset contains information on the calculation of the development index, which is an efficiency metric made up of 2 other figures known as the “development index” and the “ecological impact index”. This index is to help measure different nations' efficiency in delivering human development. Meaning how well can a nation maintain its population's needs while allowing future generations to meet their needs as well. We hypothesize that there is a negative relationship between CO₂ emissions per capita (consumption-based) and the Sustainable Development Index (SDI). Specifically, as CO₂ emissions increase, we expect the SDI to decrease. The strength of this relationship is expected to be moderate to strong, depending on the country's economic and environmental policies. The rationale behind this hypothesis is that the Sustainable Development Index penalizes nations for exceeding planetary boundaries, particularly in terms of carbon emissions. Countries that consume more and thus emit more CO₂ per capita are likely to perform worse in sustainability metrics, even if their development index is high. An outside source that supports this hypothesis is the United Nations Development Programme's 2020 Human Development Report, titled "The Next Frontier: Human Development and the Anthropocene." This report highlights that human development must now be measured by social progress and the ecological constraints within which development occurs. It stresses that exceeding planetary boundaries—such as carbon budgets—undermines long-term sustainability, a core principle reflected in the SDI.
 
@@ -68,6 +71,6 @@ To prepare the data for analysis, we first converted all columns except for the 
 
 -   Gapminder. *Gapminder Data*. <https://www.gapminder.org/data/>
 
--    Our World in Data. *CO₂ Emissions per Capita, Consumption-Based*. <https://ourworldindata.org/grapher/consumption-co2-per-capita>
+-   Our World in Data. *CO₂ Emissions per Capita, Consumption-Based*. <https://ourworldindata.org/grapher/consumption-co2-per-capita>
 
 -   United Nations Development Programme. *Human Development Report 2020: The Next Frontier*. <https://hdr.undp.org/content/human-development-report-2020>
