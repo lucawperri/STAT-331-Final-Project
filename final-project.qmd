@@ -12,6 +12,7 @@ editor: visual
 
 library(tidyverse)
 library(knitr)
+library(gganimate)
 ```
 
 ## Data Import
@@ -56,6 +57,45 @@ merged_data |>
   slice_head(n = 10) |>
   kable()
 ```
+
+## Data Visualization
+```{r}
+# Aggregate: average per country
+avg_data <- merged_data |>
+  group_by(country) |>
+  summarise(
+    avg_sdi = mean(sdi_score, na.rm = TRUE),
+    avg_co2 = mean(co2_per_capita, na.rm = TRUE)
+  )
+
+# Scatter plot
+ggplot(avg_data, aes(x = avg_sdi, y = avg_co2)) +
+  geom_point(alpha = 0.7) +
+  labs(
+    title = "Average CO₂ Emissions vs. SDI Score (per country)",
+    x = "Average SDI Score",
+    y = "Average CO₂ Emissions per Capita"
+  ) +
+  theme_minimal()
+```
+
+
+```{r}
+# Animated scatter plot
+ggplot(merged_data, aes(x = sdi_score, y = co2_per_capita)) +
+  geom_point(aes(color = country), alpha = 0.6, show.legend = FALSE) +
+  labs(
+    title = "CO₂ Emissions vs. SDI Score Over Time",
+    subtitle = "Year: {frame_time}",
+    x = "SDI Score",
+    y = "CO₂ Emissions per Capita"
+  ) +
+  transition_time(year) +
+  ease_aes('linear') +
+  theme_minimal()
+# Source: https://gganimate.com/
+```
+
 
 ## Written Report
 
