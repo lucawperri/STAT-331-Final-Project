@@ -13,7 +13,7 @@ editor: visual
 library(tidyverse)
 library(knitr)
 library(gganimate)
-library(broom)
+library(kableExtra)
 ```
 
 ## Data Import
@@ -60,6 +60,7 @@ merged_data |>
 ```
 
 ## Data Visualization
+
 ```{r}
 # Aggregate: average per country
 avg_data <- merged_data |>
@@ -80,7 +81,6 @@ ggplot(avg_data, aes(x = avg_sdi, y = avg_co2)) +
   ) +
   theme_minimal()
 ```
-
 
 ```{r}
 # Animated scatter plot
@@ -105,21 +105,49 @@ my_model <- lm(avg_co2 ~ avg_sdi,
                data = avg_data
                )
 
+library(broom)
 tidy(my_model) |> 
-  kable()
-
-broom::glance(my_model) |> 
   kable()
 ```
 
+estimated linear regression equation: $$ŷ = 15.14 - 0.18(x)$$
 
-estimated linear regression equation:
-$$ŷ = 15.14 - 0.18(x)$$
+where:
 
-where: 
+-   ŷ = Estimated average C02 emmissions per capita per year over period: 1990-2019
+-   x = Average SDI score over period: 1990-2019
 
-* ŷ = Estimated average C02 emmissions per capita per year over period: 1990-2019
-* x = Average SDI score over period: 1990-2019
+## Determining Model Fit
+
+```{r}
+# Variance in the response values (actual y values)
+response_var <- var(avg_data$avg_co2)
+
+# Variance in the fitted values (predicted y values)
+fitted_var <- var(fitted(my_model))
+
+# Variance in the residuals
+residual_var <- var(resid(my_model))
+
+# R² = variance in fitted / variance in response
+r_squared <- fitted_var / response_var
+```
+
+```{r}
+model_fit_table <- tibble(
+  Metric = c(
+    "Variance in Response (CO₂ per capita)",
+    "Variance in Fitted Values",
+    "Variance in Residuals",
+    "R² (Fitted Variance / Total Response Variance)"
+  ),
+  Value = c(response_var, fitted_var, residual_var, r_squared)
+)
+
+model_fit_table |>
+  kable("html", digits = 3, caption = "Model Fit Summary") |>
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover"))
+```
 
 ## Written Report
 
