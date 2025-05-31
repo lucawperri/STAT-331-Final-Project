@@ -14,6 +14,7 @@ library(tidyverse)
 library(knitr)
 library(gganimate)
 library(kableExtra)
+library(gifski)
 ```
 
 ## Data Import
@@ -145,9 +146,11 @@ model_fit_table <- tibble(
 )
 
 model_fit_table |>
-  kable("html", digits = 3, caption = "Model Fit Summary") |>
+  kable("html", digits = 4, caption = "Model Fit Summary") |>
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover"))
 ```
+
+The variance in the response variable (average CO₂ emissions per capita) was approximately **36.440**, while the variance in the fitted values from the regression model was **7.087**. This means that about **19.45%** of the variability in CO₂ emissions can be explained by a country's average SDI score from 1990–2019. The remaining **80.55%** is unexplained by this model and may be due to other factors such as industrialization, energy policies, or economic structure. While this suggests that SDI has a modest relationship with CO₂ emissions, it is not a very strong predictor on its own.
 
 ## Written Report
 
