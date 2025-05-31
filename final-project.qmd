@@ -13,6 +13,7 @@ editor: visual
 library(tidyverse)
 library(knitr)
 library(gganimate)
+library(broom)
 ```
 
 ## Data Import
@@ -104,8 +105,10 @@ my_model <- lm(avg_co2 ~ avg_sdi,
                data = avg_data
                )
 
-library(broom)
 tidy(my_model) |> 
+  kable()
+
+broom::glance(my_model) |> 
   kable()
 ```
 
