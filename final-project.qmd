@@ -162,6 +162,24 @@ For our project, we used Gapminder to find our two quantitative variables of our
 
 To prepare the data for analysis, we first converted all columns except for the `country` column to character type in the CO₂ dataset. This was done to prevent type mismatches during the pivot operation, as some cells may contain non-numeric characters (e.g., commas or units). We then reshaped both datasets from wide to long format, creating a consistent structure with `country`, `year`, and one quantitative variable per dataset. After reshaping, we parsed the CO₂ data to ensure it was numeric and cast `year` columns to integers. Finally, we merged the datasets by country and year, and removed rows containing `NA` values in either of the two key variables. This may have resulted in the loss of some countries or years from the analysis, potentially biasing our sample toward better-documented regions, but it was necessary to ensure data integrity and allow for a valid comparison between the two metrics.\
 
+### Linear Regression Analysis
+
+To explore the relationship between CO₂ emissions per capita and Sustainable Development Index (SDI) scores, we began by aggregating the data for each country across all years from 1990 to 2019. This allowed us to create a single observation per country representing long-term averages of each variable. We then visualized the relationship using a scatterplot, placing SDI on the x-axis and CO₂ emissions on the y-axis. The plot includes a linear regression line with a shaded confidence interval, revealing a modest negative relationship—countries with higher average SDI scores tend to have lower average per capita CO₂ emissions.
+
+We used simple linear regression to quantify this relationship. The statistical model is:
+
+$$
+\hat{y} = 15.14 - 0.18x
+$$
+
+where:\
+- ( $\hat{y}$ ) is the predicted average CO₂ emissions per capita, and\
+- ( x ) is the average SDI score.
+
+The slope of the regression line indicates that for every one-point increase in SDI, a country’s average per capita CO₂ emissions are expected to decrease by approximately 0.18 metric tons, holding all else constant.
+
+To assess model fit, we calculated the variance in the response variable (CO₂), the variance in the model’s fitted values, and the variance in the residuals. These are summarized in the table below. The resulting ( R\^2 ) value was approximately **0.1945**, indicating that around **19.45%** of the variability in CO₂ emissions per capita can be explained by differences in SDI. While this suggests a real trend, it also implies that the majority of the variation is likely due to other factors not captured in this model.
+
 ### **References**
 
 -   Gapminder. *Gapminder Data*. <https://www.gapminder.org/data/>
