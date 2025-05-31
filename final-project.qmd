@@ -71,6 +71,7 @@ avg_data <- merged_data |>
 # Scatter plot
 ggplot(avg_data, aes(x = avg_sdi, y = avg_co2)) +
   geom_point(alpha = 0.7) +
+  geom_smooth(method = lm) +
   labs(
     title = "Average CO₂ Emissions vs. SDI Score (per country)",
     x = "Average SDI Score",
@@ -96,6 +97,26 @@ ggplot(merged_data, aes(x = sdi_score, y = co2_per_capita)) +
 # Source: https://gganimate.com/
 ```
 
+## Fitting Linear Regression Model
+
+```{r}
+my_model <- lm(avg_co2 ~ avg_sdi, 
+               data = avg_data
+               )
+
+library(broom)
+tidy(my_model) |> 
+  kable()
+```
+
+
+estimated linear regression equation:
+$$ŷ = 15.14 - 0.18(x)$$
+
+where: 
+
+* ŷ = Estimated average C02 emmissions per capita per year over period: 1990-2019
+* x = Average SDI score over period: 1990-2019
 
 ## Written Report
 
