@@ -19,7 +19,7 @@ library(gganimate)
 
 ```{r}
 #| output: false
-
+#| message: false
 co2 <- read_csv("co2_pcap_cons.csv")
 sdi <- read_csv("sdi.csv")
 ```
