@@ -151,6 +151,7 @@ model_fit_table |>
 ```
 
 ## K-Fold Cross Validation
+
 ```{r}
 # Define the R² function for one fold
 compute_r2 <- function(fold_num, data, folds) {
@@ -180,8 +181,22 @@ r2_values
 
 ```
 
-
 The variance in the response variable (average CO₂ emissions per capita) was approximately **36.440**, while the variance in the fitted values from the regression model was **7.087**. This means that about **19.45%** of the variability in CO₂ emissions can be explained by a country's average SDI score from 1990–2019. The remaining **80.55%** is unexplained by this model and may be due to other factors such as industrialization, energy policies, or economic structure. While this suggests that SDI has a modest relationship with CO₂ emissions, it is not a very strong predictor on its own.
+
+```{r}
+ggplot(data.frame(R2 = r2_values), aes(x = R2)) +
+  geom_histogram(bins = 10, fill = "skyblue", color = "black") +
+  geom_vline(aes(xintercept = mean(R2)), color = "red", linetype = "dashed") +
+  labs(
+    title = "Cross-Validation R² Distribution",
+    subtitle = paste0("Mean R²: ", round(mean(r2_values), 3)),
+    x = "R² Value",
+    y = "Count"
+  ) +
+  theme_minimal()
+```
+
+The histogram displays the distribution of R^2 values from 10-fold cross-validation, with a mean of approximately 0.224 (red dashed line). This suggests the model explains about 22.4% of the variance in CO₂ emissions using SDI. The spread of values indicates moderate variability across folds, reflecting limited but consistent predictive power. These results suggest the model captures some underlying relationship but may omit other important predictors.
 
 ## Written Report
 
