@@ -150,6 +150,8 @@ model_fit_table |>
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover"))
 ```
 
+The variance in the response variable (average CO₂ emissions per capita) was approximately **36.440**, while the variance in the fitted values from the regression model was **7.087**. This means that about **19.45%** of the variability in CO₂ emissions can be explained by a country's average SDI score from 1990–2019. The remaining **80.55%** is unexplained by this model and may be due to other factors such as industrialization, energy policies, or economic structure. While this suggests that SDI has a modest relationship with CO₂ emissions, it is not a very strong predictor on its own.
+
 ## K-Fold Cross Validation
 
 ```{r}
@@ -180,8 +182,6 @@ r2_values <- map_dbl(1:k, ~compute_r2(.x, avg_data, folds))
 r2_values
 
 ```
-
-The variance in the response variable (average CO₂ emissions per capita) was approximately **36.440**, while the variance in the fitted values from the regression model was **7.087**. This means that about **19.45%** of the variability in CO₂ emissions can be explained by a country's average SDI score from 1990–2019. The remaining **80.55%** is unexplained by this model and may be due to other factors such as industrialization, energy policies, or economic structure. While this suggests that SDI has a modest relationship with CO₂ emissions, it is not a very strong predictor on its own.
 
 ```{r}
 ggplot(data.frame(R2 = r2_values), aes(x = R2)) +
